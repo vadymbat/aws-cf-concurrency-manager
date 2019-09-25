@@ -43,10 +43,10 @@ def handle_template(fragment):
         resource_list = list(fragment.get(RESOURCES).keys())
         if common_dependencies:
             resource_list = list(set(resource_list) - set(common_dependencies))
+            del fragment[CF_COMMON_DEPENDANCIES]
         for thread in create_deploy_streams(resource_list, theads_quantity):
             create_dependency_tree(fragment, thread, common_dependencies)
         del fragment[CF_PARALLEL_PARAM]
-        del fragment[CF_COMMON_DEPENDANCIES]
     return fragment
 
 
@@ -65,3 +65,11 @@ def handler(event, context):
         STATUS: status,
         FRAGMENT: fragment,
     }
+
+
+with open("demo.json") as semple:
+    event = {
+        FRAGMENT: json.loads(semple.read()),
+        REQUEST_ID: "1"
+    }
+    handler(event, "")
