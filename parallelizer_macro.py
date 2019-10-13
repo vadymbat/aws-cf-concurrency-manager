@@ -14,9 +14,14 @@ CF_COMMON_DEPENDANCIES = "CommonDependancies"
 
 
 def create_deploy_streams(resource_list, concurrency_number):
-    parallel_length = len(resource_list) // concurrency_number
-    for i in range(0, len(resource_list), parallel_length):
-        yield resource_list[i:i+parallel_length]
+    streams = []
+    resource_quantity = len(resource_list)
+    parallel_length = resource_quantity // concurrency_number
+    for i in range(0, resource_quantity, parallel_length):
+        if len(streams) == concurrency_number - 1:
+            streams.append(resource_list[i:])
+            return streams
+        streams.append(resource_list[i:i + parallel_length])
 
 
 def create_dependency_tree(fragment, cf_thread, common_dependencies):
@@ -41,6 +46,8 @@ def handle_template(fragment):
     common_dependencies = fragment.get(CF_COMMON_DEPENDANCIES)
     if theads_quantity:
         resource_list = list(fragment.get(RESOURCES).keys())
+        if theads_quantity > len(resource_list):
+            raise ValueError("The quantity of parallel tasks can't be greater than resource quantity.")
         if common_dependencies:
             resource_list = list(set(resource_list) - set(common_dependencies))
             del fragment[CF_COMMON_DEPENDANCIES]
@@ -67,9 +74,10 @@ def handler(event, context):
     }
 
 
-with open("demo.json") as semple:
-    event = {
-        FRAGMENT: json.loads(semple.read()),
-        REQUEST_ID: "1"
-    }
-    handler(event, "")
+if __name__ == "__main__":
+    with open("demo.json") as semple:
+        event = {
+            FRAGMENT: json.loads(semple.read()),
+            REQUEST_ID: "1"
+        }
+        handler(event, "")
