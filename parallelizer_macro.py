@@ -79,9 +79,3 @@ def handler(event, context):
         CF_STACK_STATUS: status,
         FRAGMENT: fragment,
     }
-
-
-if __name__ == "__main__":
-    with open("demo.json") as semple:
-        event = {FRAGMENT: json.loads(semple.read()), REQUEST_ID: "1"}
-        handler(event, "")
