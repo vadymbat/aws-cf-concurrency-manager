@@ -17,12 +17,16 @@ def create_deploy_streams(resource_list, deploy_streams_quantity):
     streams = []
     resource_quantity = len(resource_list)
     stream_length = resource_quantity // deploy_streams_quantity
-    last_stream_index = deploy_streams_quantity - 1
-    for i in range(0, resource_quantity, stream_length):
-        if len(streams) == last_stream_index:
-            streams.append(resource_list[i:])
-            return streams
-        streams.append(resource_list[i:i + stream_length])
+    resources_out_streams_quantity = resource_quantity % deploy_streams_quantity
+    resources_out_streams_start_index = resource_quantity - resources_out_streams_quantity
+    resources_out_streams = resource_list[resources_out_streams_start_index:]
+
+    for i in range(0, deploy_streams_quantity * stream_length, stream_length):
+        streams.append(resource_list[i : i + stream_length])
+        steam_index = len(streams) - 1
+        if resources_out_streams:
+            streams[steam_index].append(resources_out_streams.pop())
+    return streams
 
 
 def create_dependency_tree(fragment, cf_thread, common_dependencies):
@@ -33,11 +37,11 @@ def create_dependency_tree(fragment, cf_thread, common_dependencies):
         if CF_DEPENDS_ON in resource:
             del resource[CF_DEPENDS_ON]
         dependencies = []
-        if(common_dependencies):
+        if common_dependencies:
             dependencies += common_dependencies
-        if (previous_resource_name):
+        if previous_resource_name:
             dependencies.append(previous_resource_name)
-        if (dependencies):
+        if dependencies:
             resource[CF_DEPENDS_ON] = dependencies
         previous_resource_name = resource_name
 
@@ -48,7 +52,9 @@ def handle_template(fragment):
     if streams_quantity:
         resource_list = list(fragment.get(CF_RESOURCES).keys())
         if streams_quantity > len(resource_list):
-            raise ValueError("The quantity of parallel tasks can't be greater than resource quantity.")
+            raise ValueError(
+                "The quantity of parallel tasks can't be greater than resource quantity."
+            )
         if common_dependencies:
             resource_list = list(set(resource_list) - set(common_dependencies))
             del fragment[CF_COMMON_DEPENDANCIES_KEY]
@@ -77,8 +83,5 @@ def handler(event, context):
 
 if __name__ == "__main__":
     with open("demo.json") as semple:
-        event = {
-            FRAGMENT: json.loads(semple.read()),
-            REQUEST_ID: "1"
-        }
+        event = {FRAGMENT: json.loads(semple.read()), REQUEST_ID: "1"}
         handler(event, "")
