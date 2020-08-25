@@ -1,4 +1,5 @@
 # AWS CloudFormation thread manager
+![Build Status](https://travis-ci.org/vadymbat/cf_parallelizer.svg?branch=master)
 
 The CloudFormation doesn't manage or check resource creation limits during the deployment. The macro helps to deal with AWS API throttling during creating a lot of resources e.g. DynamoDB tables via CloudFormation. It creates different resource queues using `DependsOn` statement.
 
