@@ -1,13 +1,18 @@
 # AWS CloudFormation thread manager
+![Build Status](https://travis-ci.org/vadymbat/cf_parallelizer.svg?branch=master)
 
 The CloudFormation doesn't manage or check resource creation limits during the deployment. The macro helps to deal with AWS API throttling during creating a lot of resources e.g. DynamoDB tables via CloudFormation. It creates different resource queues using `DependsOn` statement.
 
 ## How to deploy the macro
-1. prepare CloudFormation template
+1. clone the repo
+
+`git clone https://github.com/vadymbat/cf_parallelizer.git`
+
+2. prepare CloudFormation template
 
 `aws cloudformation package --s3-bucket <your-s3-bucket> --template-file macro_template.yaml --output-template-file cf_parrallelizer.yaml`
 
-2. deploy the CloudFormation macro
+3. deploy the CloudFormation macro
 
 `aws cloudformation deploy --template-file cf_parrallelizer.yaml --stack-name cf-parrallelizer`
 
