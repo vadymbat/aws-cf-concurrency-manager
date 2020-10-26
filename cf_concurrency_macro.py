@@ -9,7 +9,7 @@ CF_STATUS_SUCCESS = "SUCCESS"
 CF_STATUS_FAILURE = "FAILURE"
 CF_RESOURCES = "Resources"
 CF_DEPENDS_ON = "DependsOn"
-CF_PARALLEL_PARAM_KEY = "ParallelTaskQuantity"
+CF_PARALLEL_PARAM_KEY = "ConcurrencyNumber"
 CF_COMMON_DEPENDANCIES_KEY = "CommonDependancies"
 
 

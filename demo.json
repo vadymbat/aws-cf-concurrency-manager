@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "ParallelTaskQuantity" : 3,
+    "ConcurrencyNumber" : 3,
     "CommonDependancies" : ["1a", "2a"],
     "Transform" : "CfConcurrencyMacro",
     "Resources": {

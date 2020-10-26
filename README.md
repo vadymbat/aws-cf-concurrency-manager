@@ -18,7 +18,7 @@ The CloudFormation doesn't manage or check resource creation limits during the d
 
 ## How to use in your CloudFormation template
 1. add "Transform" statement `Transform: CfConcurrencyMacro`
-2. put `ParallelTaskQuantity: <int>` to the root level of your template to set in how many threads your infrastructure will be deployed 
+2. put `ConcurrencyNumber: <int>` to the root level of your template to set in how many threads your infrastructure will be deployed 
 3. (optional) fill `CommonDependancies: ["<ResourceLogicalId>"]` list of the resources which are dependencies of all resources in the stack
 
 Check the [example template](demo.json) for more details.
