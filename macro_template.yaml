@@ -7,12 +7,12 @@ Resources:
   Macro:
     Type: AWS::CloudFormation::Macro
     Properties:
-      Name: ParallelizerMacro
-      FunctionName: !GetAtt ParallelizerMacroFunction.Arn
-  ParallelizerMacroFunction:
+      Name: CfConcurrencyMacro
+      FunctionName: !GetAtt CfConcurrencyMacroFunction.Arn
+  CfConcurrencyMacroFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: parallelizer_macro.py
-      Handler: parallelizer_macro.handler
+      CodeUri: cf_concurrency_macro.py
+      Handler: cf_concurrency_macro.handler
       Runtime: python3.7
       Timeout: 5
