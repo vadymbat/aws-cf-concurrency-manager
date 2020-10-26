@@ -2,7 +2,7 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "ParallelTaskQuantity" : 3,
     "CommonDependancies" : ["1a", "2a"],
-    "Transform" : "ParallelizerMacro",
+    "Transform" : "CfConcurrencyMacro",
     "Resources": {
         "1a": {
             "Type": "AWS::IAM::Role",
