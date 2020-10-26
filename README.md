@@ -10,11 +10,11 @@ The CloudFormation doesn't manage or check resource creation limits during the d
 
 2. prepare CloudFormation template
 
-`aws cloudformation package --s3-bucket <your-s3-bucket> --template-file macro_template.yaml --output-template-file cf_parrallelizer.yaml`
+`aws cloudformation package --s3-bucket <your-s3-bucket> --template-file macro_template.yaml --output-template-file cf_concurrency_macro.yaml`
 
 3. deploy the CloudFormation macro
 
-`aws cloudformation deploy --template-file cf_parrallelizer.yaml --stack-name cf-parrallelizer`
+`aws cloudformation deploy --template-file cf_concurrency_macro.yaml --stack-name cf_concurrency_macro`
 
 ## How to use in your CloudFormation template
 1. add "Transform" statement `Transform: CfConcurrencyMacro`
